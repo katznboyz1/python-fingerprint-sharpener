@@ -1,5 +1,5 @@
 #import statements
-import cv2, argparse
+import cv2, argparse, numpy
 
 #create an argument parser for the program
 parser = argparse.ArgumentParser()
@@ -13,8 +13,14 @@ arguments = parser.parse_args()
 #open the image using opencv
 imageUnedited = cv2.imread(str(arguments.inputImage))
 
+#sharpen the image using things i dont understand
+kernel = numpy.array([[0, -1, 0], 
+                      [-1, 5,-1], 
+                      [0, -1, 0]])
+imageSharpened = cv2.filter2D(imageUnedited, -1, kernel)
+
 #convert the image to a grayscale image
-imageGrayscale = cv2.cvtColor(imageUnedited, cv2.COLOR_BGR2GRAY)
+imageGrayscale = cv2.cvtColor(imageSharpened, cv2.COLOR_BGR2GRAY)
 
 #iterate through the image to filter out any colors below the threshold
 thresholdGrayscaleInt = int(arguments.colorThreshold)
